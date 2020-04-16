@@ -1,23 +1,25 @@
-  
-let request = new XMLHttpRequest();
-let button1 = document.getElementById('button1');
-let button2 = document.getElementById('button2');
+const xml = new XMLHttpRequest;
+const button2 = document.getElementById('button2');
+button2.addEventListener('click', function loadcustomers() {
+    xml.onload = function () {
+        if (xml.readyState == 4 && xml.status == 200) {
+            var objet = JSON.parse(xml.response);
+            var output = " ";
+            for (let i = 0; i < objet.length; i++) {
+                output += "<ul >" +
+                    "<li> name: " + objet[i].name + "</li>  " +
+                    "<li> company: " + objet[i].company + "</li>  " +
+                    "<li> phone: " + objet[i].phone + "</li>  " +
+                    "<li>  id: " + objet[i].id + "</li>  " +
+                    "</ul>";
+            }
+            document.getElementById('customers').innerHTML = output;
+        }
+        if (xml.status == 404) {
+            console.log("ERROR 404")
 
-
-
-button1.addEventListener("click", function () {
-    request.onload = function () {
-        const data = JSON.parse(this.response);
-        document.getElementById('customer').textContent = request.responseText;
-    };
-    request.open('GET', 'customer.json');
-    request.send();
-});
-button2.addEventListener("click", function () {
-    request.onload = function () {
-        const data = JSON.parse(this.response);
-        document.getElementById('customers').textContent = request.responseText;
-    };
-    request.open('GET', 'customers.json');
-    request.send();
-});
+        }
+    }
+    xml.open('get', 'customers.json', true);
+    xml.send();
+})
